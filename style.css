@@ -1,0 +1,33 @@
+body {
+    margin: 0;
+    padding: 0;
+    color: #a39888;
+    background-color: #07090a;
+}
+
+h1 {
+    display: flex;
+    background-color: #1c2123;
+    color: #3aa55d;
+    margin: 0;
+    height: 13vh;
+    align-items: center;
+    font-size: 350%;
+}
+
+nav {
+    background-color: #15191b;
+    width: 16vw;
+    height: 100vh;
+    color: #a9a092;
+}
+
+.navElement {
+    padding: 10px;
+    text-align: center;
+    border-radius: 5px;
+}
+
+.navElement:hover {
+    background-color: #1f2426;
+}
