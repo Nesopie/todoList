@@ -1,9 +1,25 @@
+html {
+    min-height: 100%;
+    position: relative;
+}
+
 body {
     margin: 0;
     padding: 0;
     color: #a39888;
     background-color: #07090a;
     font-family: monospace;
+    height: 100%;
+}
+
+header {
+    display: flex;
+    background-color: #1c2123;
+    padding-left: 20px;
+}
+
+.tick {
+    transform: scale(2.5);
 }
 
 h1 {
@@ -20,15 +36,21 @@ h1 {
 ul {
     background-color: #15191b;
     min-width: 16vw;
-    height: 100vh;
+    min-height: 82.81vh;
     color: #a9a092;
     padding: 10px;
+    overflow: hidden;
+    border-radius: 5px;
 }
 
 .navElement {
+    display: flex;
+    justify-content: space-between;
     padding: 10px;
     border-radius: 5px;
     font-size: 20px;
+    z-index: 100;
+    margin-bottom: 8px;
 }
 
 .navElement:hover {
@@ -75,30 +97,29 @@ main {
     width: 100%;
     border-radius: 25px;
     padding: 20px;
-    background-color: #1f2426;
-    background-image: linear-gradient(315deg, #1f2426 0%, #28313b 74%);
+    background-color: #202124;
+    background-image: linear-gradient(315deg, #202124 0%, #28313b 74%);
     margin-bottom: 20px;
 }
 
 .addTaskButton {
-    position: relative;
-    border: none;
-    transform: scale(1.5);
     background: url("../dist/images/plus.svg") no-repeat;
     background-size: 100%;
-    right: 0;
-    height: 24px;
-    width: 24px;
+    border: none;
+    border-left: thin solid #c9c3b8;
+    height: 36px;
+    width: 36px;
+    z-index: 100;
 }
 
 .removeTask {
-    display: flex;
-    border: none;
-    right: 0;
-    transform: scale(1.5);
     background: url('../dist/images/cross.svg');
-    min-width: 24px;
-    height: 24px;
+    background-size: 100%;
+    border: none;
+    border-left: thin solid #c9c3b8;
+    min-width: 36px;
+    height: 36px;
+    z-index: 100;
 }
 
 .addTaskButton:hover, .removeTask:hover {
@@ -109,8 +130,8 @@ main {
 }
 
 @keyframes buttonChange {
-    from {transform: scale(1.5);}
-    to {transform: scale(2);}
+    from {transform: scale(1);}
+    to {transform: scale(1.2);}
 }
 
 .taskName {
@@ -131,6 +152,7 @@ main {
     justify-content: center;
     height: 100vh;
     width: 100vw;
+    z-index: -1;
 }
 
 .taskForm {

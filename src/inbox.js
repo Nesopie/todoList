@@ -8,8 +8,6 @@ function loadInbox() {
     taskForm();
     main.appendChild(headerMain);
     main.appendChild(task());
-
-    return main;
 }
 
 function task() {
@@ -24,10 +22,13 @@ function task() {
 
     addTaskButton.addEventListener("click", () => {
         const taskForm = document.querySelector(".taskForm");
-        taskForm.style.visibility = "visible";
-
+        const taskFormDiv = document.querySelector(".taskFormDiv");
         const content = document.querySelector(".content");
+
+        taskForm.style.visibility = "visible";
+        taskForm.style.zIndex = "100";
         content.style.opacity = "0.2";
+        taskFormDiv.style.zIndex = "100";
     });
 
     addTask.appendChild(addTaskText);
@@ -61,6 +62,7 @@ function taskForm() {
         e.preventDefault();
         form.style.visibility = "hidden";
         content.style.opacity = "1";
+        div.style.zIndex = -1;
         form.reset();
     });
 
@@ -75,6 +77,7 @@ function taskForm() {
     taskText.classList.add("taskText");
     taskText.setAttribute("type","text");
     taskText.setAttribute("name","");
+    taskText.setAttribute("maxlength","32");
     taskText.setAttribute("placeholder","Enter task name");
 
     const createTaskButton = document.createElement("button");
@@ -84,6 +87,7 @@ function taskForm() {
     taskDescription.classList.add("taskDescription");
     taskDescription.setAttribute("type","text");
     taskDescription.setAttribute("name","");
+    taskDescription.setAttribute("maxlength","128");
     taskDescription.setAttribute("height","100");
     taskDescription.setAttribute("placeholder","Enter task description");
 
@@ -98,6 +102,7 @@ function taskForm() {
         form.style.visibility = "hidden";
         content.style.opacity = "1";
         form.reset();
+        div.style.zIndex = -1;
     });
 
     form.appendChild(container);
@@ -112,7 +117,7 @@ function taskForm() {
 const taskObjectFactory = (taskName, taskDescription) => {
     const getTaskName = () => taskName;
     const getTaskDescription  = () => taskDescription;
-    
+
     const createTask = () => {
         const taskDivContainer = document.createElement("div");
         taskDivContainer.classList.add("taskDivContainer");

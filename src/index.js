@@ -18,7 +18,12 @@ function loadHome() {
     content.appendChild(container);
 
     loadInbox();
-    console.log("hi");
+
+    const inbox = document.querySelector(".inbox");
+    inbox.addEventListener("click", () => {
+        main.innerText = "";
+        loadInbox();
+    });
 }
 
 loadHome();
