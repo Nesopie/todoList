@@ -1,13 +1,100 @@
-function loadInbox() {
-    const main = document.querySelector("main");
+const inbox = () => {
+    let inboxTaskList = [];
+    const updateInbox = (taskObj,taskNode) => {
+        const main = document.querySelector("main");
+        const addTask = document.querySelector(".addTask");
 
-    const headerMain = document.createElement("h2");
-    headerMain.classList.add("headerMain");
-    headerMain.innerText = "Inbox";
+        main.insertBefore(taskNode,addTask);
 
-    taskForm();
-    main.appendChild(headerMain);
-    main.appendChild(task());
+        inboxTaskList.push(taskObj);
+    }
+    const removeInboxTask = (nodeName, index) => {
+        inboxTaskList.splice(index,1);
+        nodeName.remove();
+    }
+    const loadInbox = () =>  {
+        const main = document.querySelector("main");
+
+        const headerMain = document.createElement("h2");
+        headerMain.classList.add("headerMain");
+        headerMain.innerText = "Inbox";
+
+        if((document.querySelector(".taskFormDiv")) == null) taskForm();
+
+        const addTask = task()
+        main.appendChild(headerMain);
+        main.appendChild(addTask);
+
+        const inboxLength = inboxTaskList.length;
+        for(let i = 0; i < inboxLength; i++) {
+            const name = inboxTaskList[i].name;
+            const description = inboxTaskList[i].description;
+
+            const node = createTaskNode(name,description);
+
+            main.insertBefore(node,addTask);
+        }
+    }
+
+    const createTaskNode = (taskName, taskDescription) => {
+        const taskDivContainer = document.createElement("div");
+        taskDivContainer.classList.add("taskDivContainer");
+
+        const taskDiv = document.createElement("div");
+        taskDiv.classList.add("taskDiv");
+
+        const taskDivName = document.createElement("div");
+        taskDivName.classList.add("taskName");
+        taskDivName.innerText = `${taskName}`;
+
+        const taskDivDesc = document.createElement("div");
+        taskDivDesc.classList.add("taskDesc");
+        taskDivDesc.innerText = `${taskDescription}`;
+
+        const removeTaskButton = document.createElement("button");
+        removeTaskButton.classList.add("removeTask");
+
+        removeTaskButton.addEventListener("click", () => {
+            const nodeName = removeTaskButton.parentNode.parentNode;
+            const index = getIndex(nodeName);
+            removeInboxTask(nodeName, index);
+        });
+        const editTaskButton = document.createElement("button");
+        editTaskButton.classList.add("editTask");
+
+        const buttons = document.createElement("div");
+        buttons.classList.add("taskBtns");
+        buttons.appendChild(editTaskButton);
+        buttons.appendChild(removeTaskButton);
+
+        editTaskButton.addEventListener("click", () => {
+
+        });
+
+        taskDiv.appendChild(taskDivName);
+        taskDiv.appendChild(taskDivDesc);
+
+        taskDivContainer.appendChild(taskDiv);
+        taskDivContainer.appendChild(buttons);
+
+        const main = document.querySelector("main");
+        const addTask = document.querySelector(".addTask");
+
+        return taskDivContainer;
+    }
+
+    const getIndex = (nodeName) => {
+        let i = 0;
+        while((nodeName = nodeName.previousSibling)) {
+            i++;
+        }
+        return i - 1;
+    }
+
+    const createTaskObject = (name, description) => {
+        return {name, description};
+    }
+    return {createTaskNode,loadInbox,createTaskObject,updateInbox};
 }
 
 function task() {
@@ -36,6 +123,8 @@ function task() {
 
     return addTask;
 }
+
+const Inbox = inbox();
 
 function taskForm() {
     const body = document.querySelector("body");
@@ -97,8 +186,7 @@ function taskForm() {
 
     createTaskButton.addEventListener("click", (e) => {
         e.preventDefault();
-        const taskObj = taskObjectFactory(taskText.value, taskDescription.value);
-        taskObj.createTask();
+        Inbox.updateInbox(Inbox.createTaskObject(taskText.value,taskDescription.value),Inbox.createTaskNode(taskText.value,taskDescription.value));
         form.style.visibility = "hidden";
         content.style.opacity = "1";
         form.reset();
@@ -114,49 +202,4 @@ function taskForm() {
     body.insertBefore(div,content);
 }
 
-const taskObjectFactory = (taskName, taskDescription) => {
-    const getTaskName = () => taskName;
-    const getTaskDescription  = () => taskDescription;
-
-    const createTask = () => {
-        const taskDivContainer = document.createElement("div");
-        taskDivContainer.classList.add("taskDivContainer");
-
-        const taskDiv = document.createElement("div");
-        taskDiv.classList.add("taskDiv");
-
-        const taskDivName = document.createElement("div");
-        taskDivName.classList.add("taskName");
-        taskDivName.innerText = `${getTaskName()}`;
-
-        const taskDivDesc = document.createElement("div");
-        taskDivDesc.classList.add("taskDesc");
-        taskDivDesc.innerText = `${getTaskDescription()}`;
-
-        const removeTaskButton = document.createElement("button");
-        removeTaskButton.classList.add("removeTask");
-
-        removeTaskButton.addEventListener("click", () => {
-            removeTask(removeTaskButton.parentNode);
-        });
-
-        taskDiv.appendChild(taskDivName);
-        taskDiv.appendChild(taskDivDesc);
-
-        taskDivContainer.appendChild(taskDiv);
-        taskDivContainer.appendChild(removeTaskButton);
-
-        const main = document.querySelector("main");
-        const addTask = document.querySelector(".addTask");
-
-        main.insertBefore(taskDivContainer,addTask);
-    }
-
-    const removeTask = (nodeName) => {
-        nodeName.remove();
-    }
-
-    return {createTask};
-}
-
-export {loadInbox};
+export {Inbox};

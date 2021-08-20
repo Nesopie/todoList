@@ -55,6 +55,7 @@ ul {
 
 .navElement:hover {
     background-color: #1f2426;
+    cursor: pointer;
 }
 
 .container {
@@ -116,13 +117,12 @@ main {
     background: url('../dist/images/cross.svg');
     background-size: 100%;
     border: none;
-    border-left: thin solid #c9c3b8;
     min-width: 36px;
     height: 36px;
     z-index: 100;
 }
 
-.addTaskButton:hover, .removeTask:hover {
+.addTaskButton:hover, .removeTask:hover, .editTask:hover {
     animation-name: buttonChange;
     animation-duration: 0.5s;
     animation-fill-mode: forwards;
@@ -236,4 +236,28 @@ main {
 
 .submitTask:hover {
     font-weight: bold;
+}
+
+.editTask {
+    background: url("../dist/images/edit.svg") no-repeat;
+    background-size: 100%;
+    border: none;
+    border-left: thin solid #c9c3b8;
+    height: 36px;
+    width: 36px;
+    z-index: 100;
+    margin-right: 4px;
+}
+
+.taskBtns {
+    display: flex;
+}
+
+.projects {
+    font-weight: bold;
+    font-size: 2em;
+}
+
+.projects:hover {
+    cursor:auto;
 }
