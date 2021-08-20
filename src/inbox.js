@@ -21,7 +21,7 @@ function task() {
 
     const addTaskButton = document.createElement("button");
     addTaskButton.classList.add("addTaskButton");
-    addTaskButton.innerText = "+";
+
     addTaskButton.addEventListener("click", () => {
         const taskForm = document.querySelector(".taskForm");
         taskForm.style.visibility = "visible";
@@ -112,6 +112,7 @@ function taskForm() {
 const taskObjectFactory = (taskName, taskDescription) => {
     const getTaskName = () => taskName;
     const getTaskDescription  = () => taskDescription;
+    
     const createTask = () => {
         const taskDivContainer = document.createElement("div");
         taskDivContainer.classList.add("taskDivContainer");
@@ -129,7 +130,6 @@ const taskObjectFactory = (taskName, taskDescription) => {
 
         const removeTaskButton = document.createElement("button");
         removeTaskButton.classList.add("removeTask");
-        removeTaskButton.innerText = "X";
 
         removeTaskButton.addEventListener("click", () => {
             removeTask(removeTaskButton.parentNode);
