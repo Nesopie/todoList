@@ -1,5 +1,5 @@
 import {createHeader, createSidebar} from './makeStuff.js';
-import {Inbox} from './inbox.js';
+import {Inbox,Projects} from './projects.js';
 
 function loadHome() {
     const content = document.querySelector(".content");
@@ -17,13 +17,13 @@ function loadHome() {
     content.appendChild(hr);
     content.appendChild(container);
 
-    Inbox.loadInbox();
+    Inbox.loadProject();
 
     const inbox = document.querySelector(".inbox");
     inbox.addEventListener("click", () => {
         main.innerText = "";
         console.log(main);
-        Inbox.loadInbox();
+        Inbox.loadProject();
     });
 }
 

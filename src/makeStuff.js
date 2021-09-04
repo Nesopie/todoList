@@ -1,3 +1,5 @@
+import {Inbox,Projects} from './projects.js';
+
 function createHeader() {
     const header = document.createElement("header");
     header.classList.add("header");
@@ -22,7 +24,23 @@ function createSidebar() {
 
     ul.appendChild(createSidebarItem("inbox"));
     ul.appendChild(createSidebarItem("today"));
-    ul.appendChild(createSidebarItem("projects"));
+    const projects = createSidebarItem("projects");
+    const projectsImg = projects.querySelector("img");
+
+    projectsImg.addEventListener("click", (e) => {
+        e.preventDefault();
+        const projectsForm = document.querySelector(".projectsForm");
+        const projectsFormDiv = document.querySelector(".projectsFormDiv");
+        const content = document.querySelector(".content");
+
+        projectsForm.style.visibility = "visible";
+        projectsForm.style.zIndex = "100";
+        content.style.opacity = "0.2";
+        projectsFormDiv.style.zIndex = "100";
+        Projects.projectForm();
+    });
+
+    ul.appendChild(projects);
 
     return ul;
 }
