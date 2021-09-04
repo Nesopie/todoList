@@ -91,7 +91,6 @@ const projects = () => {
 const project = (projName) => {
     let projectsTaskList = [];
     const updateProject = (taskObj, taskNode) => {
-        console.log(projectsTaskList);
         const main = document.querySelector("main");
         const addTask = document.querySelector(".addTask")
 
@@ -209,7 +208,6 @@ const project = (projName) => {
             form.style.visibility = "hidden";
             content.style.opacity = "1";
             form.reset();
-            // div.style.zIndex = -1;
         });
     }
 
