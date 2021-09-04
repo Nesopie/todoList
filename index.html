@@ -7,6 +7,27 @@
         <title>To-Do List</title>
     </head>
     <body>
+        <div class="projectsFormDiv">
+            <form class="projectsForm" name="taskForm">
+                <div class="formElement projectsHeader">
+                    <div class="formTitle formElement">Add Project</div>
+                    <button class="formElement cancelProject">x</button>
+                </div>
+                <input class="formElement projectsText" type="text" name="" maxlength="32" placeholder="Enter project name">
+                <!-- <textarea class="formElement projectsDescription" type="text" name="" maxlength="128" height="100" placeholder="Enter project description"></textarea> -->
+                <button class="formElement submitProject">Create Project</button>
+            </form>
+        </div>
+        <div class="taskFormDiv"><form class="taskForm" name="taskForm">
+            <div class="formElement taskHeader">
+                <div class="formTitle formElement">Add Task</div>
+                <button class="formElement cancelTask">x</button>
+            </div>
+            <input class="formElement taskText" type="text" name="" maxlength="32" placeholder="Enter task name">
+            <textarea class="formElement taskDescription" type="text" name="" maxlength="128" height="100" placeholder="Enter task description"></textarea>
+            <button class="formElement submitTask">Create Task</button>
+        </form>
+        </div>
         <div class="content">
 
         </div>
