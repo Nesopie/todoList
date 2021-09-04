@@ -30,8 +30,7 @@ const projects = () => {
 
             const projectContainer = document.createElement("div");
             projectContainer.classList.add("projectContainer");
-            console.log(name);
-            console.log(typeof name)
+
             projectContainer.classList.add(`${name}`);
             projectContainer.classList.add("navElement");
 
@@ -52,7 +51,9 @@ const projects = () => {
 
             sidebar.appendChild(projectContainer);
 
-            projectsList.push(createProjectObject(projectContainer.classList[1],project(`${name}`)));
+            const newProject = project(`${name}`);
+
+            projectsList.push(createProjectObject(projectContainer.classList[1],newProject));
 
             projectName.addEventListener("click", (e) => {
                 for(let i = 0; i < projectsList.length; i++) {
@@ -87,9 +88,10 @@ const projects = () => {
     return {projectForm};
 }
 
-const project = (name) => {
+const project = (projName) => {
     let projectsTaskList = [];
     const updateProject = (taskObj, taskNode) => {
+        console.log(projectsTaskList);
         const main = document.querySelector("main");
         const addTask = document.querySelector(".addTask")
 
@@ -107,7 +109,7 @@ const project = (name) => {
 
         const headerMain = document.createElement("h2");
         headerMain.classList.add("headerMain");
-        headerMain.innerText = `${name}`;
+        headerMain.innerText = `${projName}`;
 
         taskForm();
 
@@ -207,11 +209,11 @@ const project = (name) => {
             form.style.visibility = "hidden";
             content.style.opacity = "1";
             form.reset();
-            div.style.zIndex = -1;
+            // div.style.zIndex = -1;
         });
     }
 
-    return {loadProject};
+    return {loadProject, projectsTaskList};
 }
 
 function task() {
