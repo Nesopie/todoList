@@ -1,4 +1,4 @@
-import {Inbox,Projects} from './projects.js';
+import {Projects} from './projects.js';
 
 function createHeader() {
     const header = document.createElement("header");
