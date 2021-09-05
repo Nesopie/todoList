@@ -1,9 +1,8 @@
 const project = (() => {
     let projectsTaskList = [];
-    //updates the display after the submitTask button has been clicked in the form
     const updateProject = (taskObj, taskNode) => {
-        //this if statement is to fix the bug where multiple empty elements were being added
         if(taskObj.name === "") return;
+        console.log(projectsTaskList);
         const main = document.querySelector("main");
         const addTask = document.querySelector(".addTask")
 
@@ -11,20 +10,17 @@ const project = (() => {
         projectsTaskList.push(taskObj);
     }
 
-    //removes the task from the array and removes it from the HTML dom
     const removeProjectTask = (nodeName, index) => {
         projectsTaskList.splice(index,1);
         nodeName.remove();
     }
 
-    //this loads the project, everytime a project is clicked from the sideBar it reads the projectsTaskList and creates the task divs by reading from the taskList array
     const loadProject = (clickedProjectName) => {
         const main = document.querySelector("main");
         main.innerText = "";
         const headerMain = document.createElement("h2");
         headerMain.classList.add("headerMain");
         headerMain.innerText = `${clickedProjectName}`;
-        // console.log("clickedProjectName");
 
         taskForm();
 
@@ -45,7 +41,6 @@ const project = (() => {
         }
     }
 
-    //creates the task, buttons, returns the div, this div is appended right before the addTask btn
     const createTaskNode = (taskName, taskDescription) => {
         const taskDivContainer = document.createElement("div");
         taskDivContainer.classList.add("taskDivContainer");
@@ -65,9 +60,13 @@ const project = (() => {
         removeTaskButton.classList.add("removeTask");
 
         removeTaskButton.addEventListener("click", () => {
+            console.log(projectsTaskList);
             const nodeName = removeTaskButton.parentNode.parentNode;
-            const index = getIndex(nodeName);
+            const name = nodeName.firstChild.firstChild.innerText;
+            let index = getIndex(name);
+            console.log(index);
             removeProjectTask(nodeName, index);
+            console.log(projectsTaskList);
         });
         const editTaskButton = document.createElement("button");
         editTaskButton.classList.add("editTask");
@@ -93,20 +92,21 @@ const project = (() => {
         return taskDivContainer;
     }
 
-    //gets the index of the node from the HTML document
     const getIndex = (nodeName) => {
-        let i = 0;
-        while((nodeName = nodeName.previousSibling)) {
-            i++;
+        for(let i = 0; i < projectsTaskList.length; i++) {
+            console.log("nodeName is : " + nodeName);
+            console.log("current task list : " + projectsTaskList[i].name);
+            console.log(i);
+            if(nodeName == projectsTaskList[i].name) {
+                return i;
+            }
         }
-        return i - 1;
     }
 
     const createTaskObject = (projectName, name, description) => {
         return {projectName, name, description};
     }
 
-    //add event listeners to the task form
     function taskForm() {
         const body = document.querySelector("body");
         const content = document.querySelector(".content");
@@ -133,6 +133,7 @@ const project = (() => {
             form.style.visibility = "hidden";
             content.style.opacity = "1";
             form.reset();
+            console.log(projectsTaskList);
         });
     }
 
@@ -152,7 +153,6 @@ const project = (() => {
 
         const addProject = document.querySelector(".submitProject");
 
-        //creates a project and appends it to the sidebar
         addProject.addEventListener("click", (event) => {
             event.preventDefault();
             const sidebar = document.querySelector(".sidebar");
@@ -161,20 +161,21 @@ const project = (() => {
 
             const projectContainer = document.createElement("div");
             projectContainer.classList.add("projectContainer");
-            projectContainer.classList.add(`${name}`);
+            // projectContainer.classList.add(`${name}`);
             projectContainer.classList.add("navElement");
 
             const projectName = document.createElement("div");
             projectName.classList.add("projectName");
             projectName.innerText = `${name}`;
+            if(projectName.innerText == "") return;
 
             const removeProjectBtn = document.createElement("button");
             removeProjectBtn.classList.add("removeBtn");
 
             removeProjectBtn.addEventListener("click", () => {
                 projectContainer.remove();
-                for(let i = 1; i < projectsTaskList.length; i++) {
-                    if(projectsTaskList[i].projectName == projectContainer.classList[1]) {
+                for(let i = 0; i < projectsTaskList.length; i++) {
+                    if(projectsTaskList[i].projectName == projectName.innerText) {
                         projectsTaskList[i].splice(i--,1);
                     }
                 }
@@ -185,23 +186,10 @@ const project = (() => {
 
             sidebar.appendChild(projectContainer);
 
-            //add the project to the list in the form of a {projectName,project()} pair
-            // const newProject = project(`${name}`);
-            // projectsList.push(createProjectObject(projectContainer.classList[1],newProject));
-
             projectName.addEventListener("click", (e) => {
                 e.preventDefault();
-                //go through the projectsList array and see which project has been clicked, find the project and then load it
-                //projectContainer is the parent of projectName, it's second class element has the project name, from that, get the project() and load tasks
-                console.log("Hi");
-                loadProject(projectContainer.classList[1]);
-                // for(let i = 0; i < projectsTaskList.length; i++) {
-                //     if(projectsTaskList[i].projectName == projectContainer.classList[1]) {
-                //         document.querySelector("main").innerText = "";
-                //         loadProject(projectsContainer.classList[1]);
-                //         break;
-                //     }
-                // }
+                // loadProject(projectContainer.classList[1]);
+                loadProject(projectName.innerText);
             });
 
             const content = document.querySelector(".content");
@@ -228,7 +216,6 @@ const project = (() => {
     return {loadProject,projectsTaskList,loadInbox,projectForm};
 })();
 
-//this function is to add a the AddTask div in the beginning of every page
 function task() {
     const addTask = document.createElement("div");
     addTask.classList.add("addTask");
@@ -258,7 +245,3 @@ function task() {
 }
 
 export {project};
-
-//bugs -> line 36 gives Token must not be empty error when 2nd project is being added
-//line 236 is being called multiple times, the first time, the value of projName in line 238 is "Inbox" for some reason
-//Every element is being added to the inbox, and not the individual project
