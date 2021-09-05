@@ -6,7 +6,7 @@ function createHeader() {
 
     const img = document.createElement("img");
     img.classList.add("tick");
-    img.src = "../dist/images/tick.svg";
+    img.src = "images/tick.svg";
 
     const title = document.createElement("h1");
     title.classList.add("title");
