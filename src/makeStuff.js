@@ -53,7 +53,7 @@ function createSidebarItem(itemName) {
     const text = document.createElement("div");
     text.innerText = itemName[0].toUpperCase() + itemName.slice(1);
     const img = document.createElement("img");
-    img.src = `../dist/images/${itemName}.svg`;
+    img.src = `images/${itemName}.svg`;
 
     item.appendChild(text);
     item.appendChild(img);

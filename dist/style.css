@@ -104,7 +104,7 @@ main {
 }
 
 .addTaskButton {
-    background: url("../dist/images/plus.svg") no-repeat;
+    background: url("images/plus.svg") no-repeat;
     background-size: 100%;
     border: none;
     border-left: thin solid #c9c3b8;
@@ -114,7 +114,7 @@ main {
 }
 
 .removeTask {
-    background: url('../dist/images/cross.svg');
+    background: url('images/cross.svg');
     background-size: 100%;
     border: none;
     min-width: 36px;
@@ -239,7 +239,7 @@ main {
 }
 
 .editTask {
-    background: url("../dist/images/edit.svg") no-repeat;
+    background: url("images/edit.svg") no-repeat;
     background-size: 100%;
     border: none;
     border-left: thin solid #c9c3b8;
@@ -263,7 +263,7 @@ main {
 }
 
 .removeBtn {
-    background: url("../dist/images/cross2.svg") no-repeat;
+    background: url("images/cross2.svg") no-repeat;
     background-size: 100%;
     border: none;
     height: 24px;
