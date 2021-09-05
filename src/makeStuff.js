@@ -1,4 +1,4 @@
-import {Projects} from './projects.js';
+import {project} from './projects.js';
 
 function createHeader() {
     const header = document.createElement("header");
@@ -37,7 +37,7 @@ function createSidebar() {
         projectsForm.style.zIndex = "100";
         content.style.opacity = "0.2";
         projectsFormDiv.style.zIndex = "100";
-        Projects.projectForm();
+        project.projectForm();
     });
 
     ul.appendChild(projects);

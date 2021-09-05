@@ -1,104 +1,4 @@
-const projects = () => {
-    let projectsList = [];
-
-    const removeProject = (projectNode, index) => {
-        projectsList.splice(index,1);
-        projectNode.remove();
-    }
-
-    const projectForm = () => {
-        const form = document.querySelector(".projectsForm");
-        const cancel = document.querySelector(".cancelProject");
-        const div = document.querySelector(".projectsFormDiv");
-
-        cancel.addEventListener("click", (e) => {
-            const content = document.querySelector(".content");
-            e.preventDefault();
-            form.style.visibility = "hidden";
-            div.style.zIndex = -1;
-            content.style.opacity = "1";
-            form.reset();
-        });
-
-        const addProject = document.querySelector(".submitProject");
-
-        //creates a project and appends it to the sidebar
-        addProject.addEventListener("click", (event) => {
-            event.preventDefault();
-            const sidebar = document.querySelector(".sidebar");
-
-            const name = document.querySelector(".projectsText").value;
-
-            const projectContainer = document.createElement("div");
-            projectContainer.classList.add("projectContainer");
-            console.log(name);
-            console.trace();
-            projectContainer.classList.add(`${name}`);
-            projectContainer.classList.add("navElement");
-
-            const projectName = document.createElement("div");
-            projectName.classList.add("projectName");
-            projectName.innerText = `${name}`;
-
-            const removeProjectBtn = document.createElement("button");
-            removeProjectBtn.classList.add("removeBtn");
-
-            removeProjectBtn.addEventListener("click", () => {
-                const index = getIndex(projectContainer);
-                removeProject(projectContainer, index);
-            });
-
-            projectContainer.appendChild(projectName);
-            projectContainer.appendChild(removeProjectBtn);
-
-            sidebar.appendChild(projectContainer);
-
-            //add the project to the list in the form of a {projectName,project()} pair
-            const newProject = project(`${name}`);
-            projectsList.push(createProjectObject(projectContainer.classList[1],newProject));
-
-            projectName.addEventListener("click", (e) => {
-                e.preventDefault();
-                //go through the projectsList array and see which project has been clicked, find the project and then load it
-                //projectContainer is the parent of projectName, it's second class element has the project name, from that, get the project() and load tasks
-                for(let i = 1; i < projectsList.length; i++) {
-                    if(projectsList[i].name == projectContainer.classList[1]) {
-                        document.querySelector("main").innerText = "";
-                        projectsList[i].proj.loadProject(projectsList[i].name);
-                        break;
-                    }
-                }
-            });
-
-            const content = document.querySelector(".content");
-            form.style.visibility = "hidden";
-            div.style.zIndex = -1;
-            content.style.opacity = "1";
-            form.reset();
-        });
-
-        const getIndex = (projectName) => {
-            let i = 0;
-            while((projectName = projectName.previousSibling)) {
-                i++;
-            }
-            return i - 1;
-        }
-    }
-
-    const createProjectObject = (name,proj) => {
-        return {name, proj};
-    }
-
-    //adds the inbox in the beginning
-    if(projectsList.length == 0) {
-        projectsList.push(createProjectObject("Inbox", project("Inbox")));
-    }
-
-    return {projectForm, projectsList};
-}
-
-const project = (projName) => {
+const project = (() => {
     let projectsTaskList = [];
     //updates the display after the submitTask button has been clicked in the form
     const updateProject = (taskObj, taskNode) => {
@@ -120,39 +20,32 @@ const project = (projName) => {
     //this loads the project, everytime a project is clicked from the sideBar it reads the projectsTaskList and creates the task divs by reading from the taskList array
     const loadProject = (clickedProjectName) => {
         const main = document.querySelector("main");
+        main.innerText = "";
         const headerMain = document.createElement("h2");
         headerMain.classList.add("headerMain");
-        headerMain.innerText = `${projName}`;
+        headerMain.innerText = `${clickedProjectName}`;
+        // console.log("clickedProjectName");
 
-        console.log(projName);
-        console.log(clickedProjectName);
-        console.trace();
         taskForm();
 
         const addTask = task();
         main.appendChild(headerMain);
         main.appendChild(addTask);
 
-        const projectsLength = projectsTaskList.length;
-        for(let i = 0; i < projectsLength; i++) {
+        for(let i = 0; i < projectsTaskList.length; i++) {
             const name = projectsTaskList[i].name;
-            //this if statement has been added to fix the bug where multiple empty elements were being added
-            if(name === "") continue;
             const description = projectsTaskList[i].description;
 
             const node = createTaskNode(name,description);
-            // if(clickedProjectName == 'Inbox') {
-            //     console.log("hi");
-            //     main.insertBefore(node,addTask);
-            // }
-
-            if(projName == clickedProjectName) {
+            if(clickedProjectName == "Inbox") {
+                main.insertBefore(node,addTask);
+            }else if(projectsTaskList[i].projectName == clickedProjectName) {
                 main.insertBefore(node,addTask);
             }
         }
     }
 
-    //creates the task, buttons, returns the div
+    //creates the task, buttons, returns the div, this div is appended right before the addTask btn
     const createTaskNode = (taskName, taskDescription) => {
         const taskDivContainer = document.createElement("div");
         taskDivContainer.classList.add("taskDivContainer");
@@ -235,7 +128,7 @@ const project = (projName) => {
 
         createTaskButton.addEventListener("click", (e) => { //upon submitting update the display
             e.preventDefault();
-            console.log(projName);
+            const projName = document.querySelector("h2").innerText;
             updateProject(createTaskObject(projName,taskText.value,taskDescription.value),createTaskNode(taskText.value,taskDescription.value));
             form.style.visibility = "hidden";
             content.style.opacity = "1";
@@ -243,8 +136,97 @@ const project = (projName) => {
         });
     }
 
-    return {loadProject,projectsTaskList};
-}
+    const projectForm = () => {
+        const form = document.querySelector(".projectsForm");
+        const cancel = document.querySelector(".cancelProject");
+        const div = document.querySelector(".projectsFormDiv");
+
+        cancel.addEventListener("click", (e) => {
+            const content = document.querySelector(".content");
+            e.preventDefault();
+            form.style.visibility = "hidden";
+            div.style.zIndex = -1;
+            content.style.opacity = "1";
+            form.reset();
+        });
+
+        const addProject = document.querySelector(".submitProject");
+
+        //creates a project and appends it to the sidebar
+        addProject.addEventListener("click", (event) => {
+            event.preventDefault();
+            const sidebar = document.querySelector(".sidebar");
+
+            const name = document.querySelector(".projectsText").value;
+
+            const projectContainer = document.createElement("div");
+            projectContainer.classList.add("projectContainer");
+            projectContainer.classList.add(`${name}`);
+            projectContainer.classList.add("navElement");
+
+            const projectName = document.createElement("div");
+            projectName.classList.add("projectName");
+            projectName.innerText = `${name}`;
+
+            const removeProjectBtn = document.createElement("button");
+            removeProjectBtn.classList.add("removeBtn");
+
+            removeProjectBtn.addEventListener("click", () => {
+                projectContainer.remove();
+                for(let i = 1; i < projectsTaskList.length; i++) {
+                    if(projectsTaskList[i].projectName == projectContainer.classList[1]) {
+                        projectsTaskList[i].splice(i--,1);
+                    }
+                }
+            });
+
+            projectContainer.appendChild(projectName);
+            projectContainer.appendChild(removeProjectBtn);
+
+            sidebar.appendChild(projectContainer);
+
+            //add the project to the list in the form of a {projectName,project()} pair
+            // const newProject = project(`${name}`);
+            // projectsList.push(createProjectObject(projectContainer.classList[1],newProject));
+
+            projectName.addEventListener("click", (e) => {
+                e.preventDefault();
+                //go through the projectsList array and see which project has been clicked, find the project and then load it
+                //projectContainer is the parent of projectName, it's second class element has the project name, from that, get the project() and load tasks
+                console.log("Hi");
+                loadProject(projectContainer.classList[1]);
+                // for(let i = 0; i < projectsTaskList.length; i++) {
+                //     if(projectsTaskList[i].projectName == projectContainer.classList[1]) {
+                //         document.querySelector("main").innerText = "";
+                //         loadProject(projectsContainer.classList[1]);
+                //         break;
+                //     }
+                // }
+            });
+
+            const content = document.querySelector(".content");
+            form.style.visibility = "hidden";
+            div.style.zIndex = -1;
+            content.style.opacity = "1";
+            form.reset();
+        });
+    }
+
+    const loadInbox = () => {
+        const main = document.querySelector("main");
+        const headerMain = document.createElement("h2");
+        headerMain.classList.add("headerMain");
+        headerMain.innerText = "Inbox";
+
+        taskForm();
+
+        const addTask = task();
+
+        main.appendChild(headerMain);
+        main.appendChild(addTask);
+    }
+    return {loadProject,projectsTaskList,loadInbox,projectForm};
+})();
 
 //this function is to add a the AddTask div in the beginning of every page
 function task() {
@@ -275,9 +257,7 @@ function task() {
     return addTask;
 }
 
-const Projects = projects();
-
-export {Projects};
+export {project};
 
 //bugs -> line 36 gives Token must not be empty error when 2nd project is being added
 //line 236 is being called multiple times, the first time, the value of projName in line 238 is "Inbox" for some reason

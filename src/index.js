@@ -1,5 +1,5 @@
 import {createHeader, createSidebar} from './makeStuff.js';
-import {Projects} from './projects.js';
+import {project} from './projects.js';
 
 function loadHome() {
     const content = document.querySelector(".content");
@@ -17,14 +17,19 @@ function loadHome() {
     content.appendChild(hr);
     content.appendChild(container);
 
-    const Inbox = Projects.projectsList[0].proj;
+    //inbox is the first element of the projects list
+    // const Inbox = Projects.projectsList[0].proj;
+    //
+    // //load inbox by default
+    // Inbox.loadProject("Inbox");
 
-    Inbox.loadProject("Inbox");
+    project.loadInbox();
 
     const inbox = document.querySelector(".inbox");
     inbox.addEventListener("click", () => {
         main.innerText = "";
-        Inbox.loadProject("Inbox");
+        // Inbox.loadProject("Inbox");
+        project.loadProject("Inbox");
     });
 }
 
